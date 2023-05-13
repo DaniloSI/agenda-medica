@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Danilo de Oliveira",
+    "specialties": ["Clínio Geral", "Anestesista", "Cirurgião"],
+    "rating": 4.5,
+    "ratingQuantity": 120,
+    "address": {
+      "street": "Rua dos bobos",
+      "number": 0
+    }
+  },
+  {
+    "name": "Manoel Enrico Bernardo Alves",
+    "specialties": ["Infectologia", "Anestesiologia", "Cirurgia Cardiovascular", "Medicina Intensiva"],
+    "rating": 3.9,
+    "ratingQuantity": 426,
+    "address": {
+      "street": "Rua Canarinho",
+      "number": 427
+    }
+  },
+  {
+    "name": "Isabelle Vanessa Regina da Costa",
+    "specialties": ["Medicina Física e Reabilitação", "Medicina Preventiva e Social", "Endocrinologia e Metabologia"],
+    "rating": 4.9,
+    "ratingQuantity": 52,
+    "address": {
+      "street": "Av. Copa Cabana",
+      "number": 514
+    }
+  },
+  {
+    "name": "Ricardo Cauã Farias",
+    "specialties": ["Neurologia", "Reumatologia", "Cirurgia da Mão", "Medicina Legal e Perícia Médica (ou medicina forense)"],
+    "rating": 2.7,
+    "ratingQuantity": 511,
+    "address": {
+      "street": "Rua Vila Moraes",
+      "number": 3
+    }
+  }
+]
