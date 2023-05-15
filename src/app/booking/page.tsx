@@ -27,7 +27,7 @@ import specialties from '@/utils/medical-specialties.json';
 import states from '@/utils/states.json';
 import { useState } from 'react';
 import professionals from '@/mocks/professionals.json';
-import AppointmentTimes from './AppointmentTimes';
+import ModalAppointmentTimes from './ModalAppointmentTimes';
 
 export default function Booking() {
   const [activeFilter, setActiveFilter] = useState<Boolean>(false);
@@ -118,7 +118,7 @@ export default function Booking() {
                   <Typography variant="body2">{`${professional.address.street}, Nº ${professional.address.number}`}</Typography>
                 </Stack>
               </Box>
-              <AppointmentTimes />
+              <ModalAppointmentTimes />
             </Paper>
           </Grid>
         ))}
