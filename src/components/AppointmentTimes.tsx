@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {
   Button, IconButton, Stack, Typography,
@@ -8,23 +8,58 @@ import {
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 
 import { grey } from '@mui/material/colors';
+import usePageSize from '@/hooks/usePageSize';
+
+const appointmentTimes = Array.from({ length: 7 }, (_, i) => i + 15).map((day) => ({
+  date: `2023-05-${day}`,
+  times: Array.from({ length: 9 }, (_, i) => i + (i > 3 ? 9 : 8)).map((n) => n.toString().padStart(2, '0')).flatMap((hour) => [`${hour}:00`, `${hour}:30`]),
+}))
+  .map((day) => ({ ...day, date: new Date(day.date) }));
 
 export default function AppointmentTimes() {
+  const [page, setPage] = useState(1);
+  const { numberItemsPage, totalPages } = usePageSize(appointmentTimes.length);
+
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(Math.trunc(totalPages));
+    }
+  }, [totalPages, page]);
+
+  const handlePrev = () => {
+    setPage((p) => (p === 1 ? p : p - 1));
+  };
+
+  const handleNext = () => {
+    setPage((p) => (p >= totalPages ? p : p + 1));
+  };
+
   return (
     <Box display="flex">
-      <Box mr={2}>
-        <IconButton size="small">
-          <ArrowLeft color="primary" fontSize="large" />
+      <Box>
+        <IconButton
+          size="small"
+          color={page === 1 ? 'default' : 'primary'}
+          onClick={handlePrev}
+        >
+          <ArrowLeft fontSize="large" />
         </IconButton>
       </Box>
-      <Stack direction="row" style={{ maxWidth: '100%', overflowX: 'hidden' }}>
-        {Array.from({ length: 15 }, (x, i) => i + 14).map((day) => ({
-          date: `2023-05-${day}`,
-          times: Array.from({ length: 9 }, (_, i) => i + (i > 3 ? 9 : 8)).map((n) => n.toString().padStart(2, '0')).flatMap((hour) => [`${hour}:00`, `${hour}:30`]),
-        }))
-          .map((day) => ({ ...day, date: new Date(day.date) }))
-          .map((day) => (
-            <Stack mx={2} textAlign="center" spacing={1}>
+      <Box sx={{
+        minWidth: { xs: 'calc(100vw - 130px)', md: 'calc(800px - 130px)' },
+        overflowX: 'hidden',
+      }}
+      >
+        <Stack direction="row">
+          {appointmentTimes.map((day) => (
+            <Stack
+              key={day.date.toISOString()}
+              textAlign="center"
+              spacing={1}
+              sx={{
+                minWidth: { xs: `calc((100vw - 130px) / ${numberItemsPage})`, md: `calc((800px - 130px) / ${numberItemsPage})` },
+              }}
+            >
               <Box>
                 <Typography textTransform="capitalize">
                   {day.date.toLocaleString('pt-BR', { weekday: 'short' }).replace('.', '')}
@@ -38,10 +73,15 @@ export default function AppointmentTimes() {
               ))}
             </Stack>
           ))}
-      </Stack>
-      <Box ml={2}>
-        <IconButton size="small">
-          <ArrowRight color="primary" fontSize="large" />
+        </Stack>
+      </Box>
+      <Box>
+        <IconButton
+          size="small"
+          color={page >= totalPages ? 'default' : 'primary'}
+          onClick={handleNext}
+        >
+          <ArrowRight fontSize="large" />
         </IconButton>
       </Box>
     </Box>

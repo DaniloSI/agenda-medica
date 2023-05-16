@@ -43,7 +43,6 @@ export default function ModalAppointmentTimes() {
       >
         <Box sx={style}>
           <Box sx={{
-            p: 2,
             overflowY: 'scroll',
             '&::-webkit-scrollbar': {
               boxShadow: 'inset 0 0 5px white',
@@ -72,9 +71,9 @@ export default function ModalAppointmentTimes() {
                 </Button>
               </Box>
             </Box>
-            <Box display="flex" justifyContent="flex-end">
-              <Button onClick={handleClose}>Fechar</Button>
-            </Box>
+          </Box>
+          <Box display="flex" justifyContent="flex-end">
+            <Button onClick={handleClose}>Fechar</Button>
           </Box>
         </Box>
       </Modal>
