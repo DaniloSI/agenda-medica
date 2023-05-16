@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { Menu as MenuIcon, MedicalServices as MedicalServicesIcon } from '@mui/icons-material';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Minha conta', 'Sair'];
 
 export default function AppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);

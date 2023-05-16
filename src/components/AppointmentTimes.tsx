@@ -10,8 +10,8 @@ import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
 import usePageSize from '@/hooks/usePageSize';
 
-const appointmentTimes = Array.from({ length: 7 }, (_, i) => i + 15).map((day) => ({
-  date: `2023-05-${day}`,
+const appointmentTimes = Array.from({ length: 23 }, (_, i) => (i + 1).toString().padStart(2, '0')).map((day) => ({
+  date: `2023-05-${day}T00:00`,
   times: Array.from({ length: 9 }, (_, i) => i + (i > 3 ? 9 : 8)).map((n) => n.toString().padStart(2, '0')).flatMap((hour) => [`${hour}:00`, `${hour}:30`]),
 }))
   .map((day) => ({ ...day, date: new Date(day.date) }));
@@ -50,7 +50,13 @@ export default function AppointmentTimes() {
         overflowX: 'hidden',
       }}
       >
-        <Stack direction="row">
+        <Stack
+          direction="row"
+          sx={{
+            transform: `translateX(calc(100% * -${page - 1}))`,
+            transition: 'transform 1s',
+          }}
+        >
           {appointmentTimes.map((day) => (
             <Stack
               key={day.date.toISOString()}
