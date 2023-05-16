@@ -9,3 +9,13 @@ Por acreditar que toda solução deve ser direcionada para melhor solucionar um 
 - O médico e o paciente poderão visualizar as próximas consultas agendadas e histórico de consultas.
 - O médico poderá cadastrar agendas de horários de atendimento.
 - Qualquer pessoa poderá acessar a plataforma e se cadastrar como médico ou paciente.
+
+## Métricas de Código
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DaniloSI_agenda-medica&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DaniloSI_agenda-medica&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=DaniloSI_agenda-medica&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=DaniloSI_agenda-medica&metric=bugs)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=DaniloSI_agenda-medica&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
