@@ -10,7 +10,7 @@ Por acreditar que toda solução deve ser direcionada para melhor solucionar um 
 - O médico poderá cadastrar agendas de horários de atendimento.
 - Qualquer pessoa poderá acessar a plataforma e se cadastrar como médico ou paciente.
 
-## Métricas de Código
+## Métricas de Qualidade de Código
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
 
