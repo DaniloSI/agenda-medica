@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Grid, Stack } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 
 import specialties from '@/utils/medical-specialties.json';
 import states from '@/utils/states.json';

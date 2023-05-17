@@ -1,5 +1,5 @@
 {
-  "plugins": ["@typescript-eslint", "import", "prettier"],
+  "plugins": ["@typescript-eslint", "import", "prettier", "unused-imports"],
   "extends": [
     "next/core-web-vitals",
     "airbnb",
@@ -13,6 +13,7 @@
   },
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "max-len": ["error", { "code": 80, "ignoreStrings": true }]
+    "max-len": ["error", { "code": 80, "ignoreStrings": true }],
+    "unused-imports/no-unused-imports": ["error"]
   }
 }
