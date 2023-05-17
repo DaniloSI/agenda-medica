@@ -1,13 +1,18 @@
 {
+  "plugins": ["@typescript-eslint", "import", "prettier"],
   "extends": [
     "next/core-web-vitals",
     "airbnb",
-    "airbnb-typescript"
+    "airbnb-typescript",
+    "prettier",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "rules": {
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "max-len": ["error", { "code": 80, "ignoreStrings": true }]
   }
 }

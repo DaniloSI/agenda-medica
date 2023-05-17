@@ -15,7 +15,9 @@ describe('Booking', () => {
   it('should show appointment times modal when click in show available times', async () => {
     render(<Booking />);
 
-    const showTimesButton = screen.getAllByRole('button', { name: /ver horários disponíveis/i })[0];
+    const showTimesButton = screen.getAllByRole('button', {
+      name: /ver horários disponíveis/i,
+    })[0];
 
     await userEvent.click(showTimesButton);
 

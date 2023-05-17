@@ -2,18 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import {
-  Button, IconButton, Stack, Typography,
-} from '@mui/material';
+import { Button, IconButton, Stack, Typography } from '@mui/material';
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 
 import { grey } from '@mui/material/colors';
 import usePageSize from '@/hooks/usePageSize';
 
-const appointmentTimes = Array.from({ length: 23 }, (_, i) => (i + 1).toString().padStart(2, '0')).map((day) => ({
-  date: `2023-05-${day}T00:00`,
-  times: Array.from({ length: 9 }, (_, i) => i + (i > 3 ? 9 : 8)).map((n) => n.toString().padStart(2, '0')).flatMap((hour) => [`${hour}:00`, `${hour}:30`]),
-}))
+const appointmentTimes = Array.from({ length: 23 }, (_, i) =>
+  (i + 1).toString().padStart(2, '0')
+)
+  .map((day) => ({
+    date: `2023-05-${day}T00:00`,
+    times: Array.from({ length: 9 }, (_, i) => i + (i > 3 ? 9 : 8))
+      .map((n) => n.toString().padStart(2, '0'))
+      .flatMap((hour) => [`${hour}:00`, `${hour}:30`]),
+  }))
   .map((day) => ({ ...day, date: new Date(day.date) }));
 
 export default function AppointmentTimes() {
@@ -45,10 +48,11 @@ export default function AppointmentTimes() {
           <ArrowLeft fontSize="large" />
         </IconButton>
       </Box>
-      <Box sx={{
-        minWidth: { xs: 'calc(100vw - 130px)', md: 'calc(800px - 130px)' },
-        overflowX: 'hidden',
-      }}
+      <Box
+        sx={{
+          minWidth: { xs: 'calc(100vw - 130px)', md: 'calc(800px - 130px)' },
+          overflowX: 'hidden',
+        }}
       >
         <Stack
           direction="row"
@@ -63,15 +67,29 @@ export default function AppointmentTimes() {
               textAlign="center"
               spacing={1}
               sx={{
-                minWidth: { xs: `calc((100vw - 130px) / ${numberItemsPage})`, md: `calc((800px - 130px) / ${numberItemsPage})` },
+                minWidth: {
+                  xs: `calc((100vw - 130px) / ${numberItemsPage})`,
+                  md: `calc((800px - 130px) / ${numberItemsPage})`,
+                },
               }}
             >
               <Box>
                 <Typography textTransform="capitalize">
-                  {day.date.toLocaleString('pt-BR', { weekday: 'short' }).replace('.', '')}
+                  {day.date
+                    .toLocaleString('pt-BR', { weekday: 'short' })
+                    .replace('.', '')}
                 </Typography>
-                <Typography textTransform="capitalize" variant="body2" color={grey[600]}>
-                  {new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'short' }).format(day.date).replaceAll(/( de|\.)/g, '')}
+                <Typography
+                  textTransform="capitalize"
+                  variant="body2"
+                  color={grey[600]}
+                >
+                  {new Intl.DateTimeFormat('pt-BR', {
+                    day: 'numeric',
+                    month: 'short',
+                  })
+                    .format(day.date)
+                    .replaceAll(/( de|\.)/g, '')}
                 </Typography>
               </Box>
               {day.times.map((time) => (

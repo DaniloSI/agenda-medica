@@ -15,13 +15,20 @@ import {
   MenuItem,
   Link,
 } from '@mui/material';
-import { Menu as MenuIcon, MedicalServices as MedicalServicesIcon } from '@mui/icons-material';
+import {
+  Menu as MenuIcon,
+  MedicalServices as MedicalServicesIcon,
+} from '@mui/icons-material';
 
 const settings = ['Minha conta', 'Sair'];
 
 export default function AppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);

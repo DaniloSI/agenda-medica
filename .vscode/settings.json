@@ -1,3 +1,10 @@
 {
-  "cSpell.words": ["airbnb"]
+  "cSpell.words": ["airbnb"],
+  "editor.formatOnSave": true,
+  "[javascript, javascriptreact]": {
+    "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
 }
