@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Booking from '@/app/booking/page';
 
 import userEvent from '@testing-library/user-event';
@@ -17,13 +17,12 @@ describe('Booking', () => {
 
     const showTimesButton = screen.getAllByRole('button', { name: /ver horários disponíveis/i })[0];
 
-    userEvent.click(showTimesButton);
+    await userEvent.click(showTimesButton);
 
-    await waitFor(() => {
-      const modalTitle = screen.getByRole('heading', {
-        name: 'Horários',
-      });
-      expect(modalTitle).toBeVisible();
+    const modalTitle = screen.getByRole('heading', {
+      name: 'Horários',
     });
+
+    expect(modalTitle).toBeVisible();
   });
 });
