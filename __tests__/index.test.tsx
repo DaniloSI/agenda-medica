@@ -5,8 +5,8 @@ describe('Home', () => {
   it('should render home page paragraph', () => {
     render(<Home />);
 
-    const heading = screen.getByText(/home page/i);
+    const text = screen.getByText(/home page/i);
 
-    expect(heading).toBeInTheDocument();
+    expect(text).toBeInTheDocument();
   });
 });

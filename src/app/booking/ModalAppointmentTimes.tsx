@@ -37,8 +37,8 @@ export default function ModalAppointmentTimes() {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="Horários"
+        aria-describedby="Visualização de horários disponíveis"
         disableScrollLock
       >
         <Box sx={style}>

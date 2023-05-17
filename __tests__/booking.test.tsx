@@ -1,0 +1,29 @@
+import { render, screen, waitFor } from '@testing-library/react';
+import Booking from '@/app/booking/page';
+
+import userEvent from '@testing-library/user-event';
+
+describe('Booking', () => {
+  it('should show the breadcrumb', () => {
+    render(<Booking />);
+
+    const breadcrumb = screen.getByText(/Agendamento de Consulta/i);
+
+    expect(breadcrumb).toBeInTheDocument();
+  });
+
+  it('should show appointment times modal when click in show available times', async () => {
+    render(<Booking />);
+
+    const showTimesButton = screen.getAllByRole('button', { name: /ver horários disponíveis/i })[0];
+
+    userEvent.click(showTimesButton);
+
+    await waitFor(() => {
+      const modalTitle = screen.getByRole('heading', {
+        name: 'Horários',
+      });
+      expect(modalTitle).toBeVisible();
+    });
+  });
+});
