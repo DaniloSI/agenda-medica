@@ -30,7 +30,7 @@ import professionals from '@/mocks/professionals.json';
 import ModalAppointmentTimes from './ModalAppointmentTimes';
 
 export default function Booking() {
-  const [activeFilter, setActiveFilter] = useState<Boolean>(false);
+  const [activeFilter, setActiveFilter] = useState<boolean>(false);
   return (
     <Container maxWidth="lg" component="main">
       <Breadcrumbs

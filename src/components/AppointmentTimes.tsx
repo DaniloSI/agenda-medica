@@ -75,7 +75,7 @@ export default function AppointmentTimes() {
                 </Typography>
               </Box>
               {day.times.map((time) => (
-                <Button>{time}</Button>
+                <Button key={time}>{time}</Button>
               ))}
             </Stack>
           ))}
