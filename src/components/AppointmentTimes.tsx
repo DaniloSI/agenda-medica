@@ -19,7 +19,13 @@ const appointmentTimes = Array.from({ length: 23 }, (_, i) =>
   }))
   .map((day) => ({ ...day, date: new Date(day.date) }));
 
-export default function AppointmentTimes() {
+type AppointmentTimesProps = {
+  onClickTime: (date: Date, time: string) => void;
+};
+
+export default function AppointmentTimes({
+  onClickTime,
+}: AppointmentTimesProps) {
   const [page, setPage] = useState(1);
   const { numberItemsPage, totalPages } = usePageSize(appointmentTimes.length);
 
@@ -93,7 +99,9 @@ export default function AppointmentTimes() {
                 </Typography>
               </Box>
               {day.times.map((time) => (
-                <Button key={time}>{time}</Button>
+                <Button key={time} onClick={() => onClickTime(day.date, time)}>
+                  {time}
+                </Button>
               ))}
             </Stack>
           ))}

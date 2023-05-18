@@ -13,7 +13,10 @@
   },
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "max-len": ["error", { "code": 80, "ignoreStrings": true }],
+    "max-len": [
+      "error",
+      { "code": 80, "ignoreStrings": true, "ignoreTemplateLiterals": true }
+    ],
     "unused-imports/no-unused-imports": ["error"]
   }
 }
