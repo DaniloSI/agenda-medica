@@ -16,6 +16,7 @@ As seguintes características e funcionalidades serão implementadas neste proje
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DaniloSI_agenda-medica&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DaniloSI_agenda-medica&metric=coverage)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DaniloSI_agenda-medica&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=DaniloSI_agenda-medica&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=DaniloSI_agenda-medica)
