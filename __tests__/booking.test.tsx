@@ -3,6 +3,10 @@ import Booking from '@/app/booking/page';
 
 import userEvent from '@testing-library/user-event';
 
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+}));
+
 describe('Booking', () => {
   it('should show the breadcrumb', () => {
     render(<Booking />);
