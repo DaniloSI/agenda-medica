@@ -15,10 +15,8 @@ import {
   MenuItem,
   Link,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  MedicalServices as MedicalServicesIcon,
-} from '@mui/icons-material';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import Logo from '@/components/Logo';
 
 const settings = ['Minha conta', 'Sair'];
 
@@ -88,23 +86,7 @@ export default function AppBar() {
             </Menu>
           </Box>
 
-          <MedicalServicesIcon sx={{ display: 'flex', mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 5,
-              display: 'flex',
-              flexGrow: { xs: 1, md: 0 },
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Agenda Médica
-          </Typography>
+          <Logo />
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button
