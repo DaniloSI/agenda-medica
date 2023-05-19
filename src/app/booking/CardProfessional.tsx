@@ -7,13 +7,20 @@ import { useContext } from 'react';
 import ProfessionalContext from '@/contexts/ProfessionalContext';
 import ModalAppointmentTimes from './ModalAppointmentTimes';
 
-export default function CardProfessional() {
+type CardProfessionalProps = {
+  basic?: boolean;
+};
+
+export default function CardProfessional({
+  basic = false,
+}: CardProfessionalProps) {
   const { name, specialties, rating, ratingQuantity, address } =
     useContext(ProfessionalContext);
 
   return (
     <Paper
-      variant="outlined"
+      variant={basic ? 'elevation' : 'outlined'}
+      elevation={basic ? 0 : undefined}
       component={Box}
       p={2}
       height="100%"
@@ -26,7 +33,9 @@ export default function CardProfessional() {
           <Avatar sx={{ width: 56, height: 56 }} />
           <Stack spacing={1}>
             <Typography variant="h6">{name}</Typography>
-            <Typography variant="body2">{specialties.join(', ')}</Typography>
+            {!basic && (
+              <Typography variant="body2">{specialties.join(', ')}</Typography>
+            )}
             <Box display="flex" alignItems="center">
               <Rating
                 name="rating"
@@ -41,12 +50,14 @@ export default function CardProfessional() {
             </Box>
           </Stack>
         </Stack>
-        <Stack direction="row" my={2} spacing={1}>
-          <Place fontSize="small" />
-          <Typography variant="body2">{`${address.street}, Nº ${address.number}`}</Typography>
-        </Stack>
+        {!basic && (
+          <Stack direction="row" my={2} spacing={1}>
+            <Place fontSize="small" />
+            <Typography variant="body2">{`${address.street}, Nº ${address.number}`}</Typography>
+          </Stack>
+        )}
       </Box>
-      <ModalAppointmentTimes />
+      {!basic && <ModalAppointmentTimes />}
     </Paper>
   );
 }

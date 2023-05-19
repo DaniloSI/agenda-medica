@@ -6,12 +6,14 @@ type AutocompleteProps = {
   id: string;
   label: string;
   options: string[];
+  required?: boolean;
 };
 
 export default function Autocomplete({
   id,
   label,
   options,
+  required = false,
 }: AutocompleteProps) {
   return (
     <MuiAutocomplete
@@ -21,7 +23,7 @@ export default function Autocomplete({
       fullWidth
       renderInput={(params) => (
         // eslint-disable-next-line react/jsx-props-no-spreading
-        <TextField {...params} label={label} />
+        <TextField {...params} label={label} required={required} />
       )}
     />
   );

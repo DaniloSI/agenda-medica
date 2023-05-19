@@ -1,15 +1,33 @@
 'use client';
 
-import { Container, Typography } from '@mui/material';
+import { Container, Paper } from '@mui/material';
 
 import Breadcrumbs from '@/components/Breadcrumbs';
+import ProfessionalContext from '@/contexts/ProfessionalContext';
+import professionals from '@/mocks/professionals.json';
+import { Professional } from '@/types';
+import CardProfessional from '../CardProfessional';
+import BookingForm from './BookingForm';
 
-export default function Booking() {
+type BookingProps = {
+  params: { id: string };
+};
+
+export default function Booking({ params: { id } }: BookingProps) {
+  const professional = professionals[parseInt(id, 10) - 1] as Professional;
+
   return (
     <Container maxWidth="lg" component="main">
       <Breadcrumbs />
 
-      <Typography>Agendar consulta médica</Typography>
+      <Container maxWidth="sm">
+        <Paper variant="outlined">
+          <ProfessionalContext.Provider value={professional}>
+            <CardProfessional basic />
+            <BookingForm />
+          </ProfessionalContext.Provider>
+        </Paper>
+      </Container>
     </Container>
   );
 }
