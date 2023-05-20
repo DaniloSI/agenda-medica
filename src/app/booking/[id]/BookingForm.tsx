@@ -5,7 +5,6 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import {
-  Button,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -20,13 +19,14 @@ import {
 } from '@mui/material';
 
 import ProfessionalContext from '@/contexts/ProfessionalContext';
-import { useContext } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useContext, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import InputMask from '@/components/InputMask';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ErrorMessage } from '@hookform/error-message';
-import { formatDate } from '@/utils';
+import { formatDate, notify } from '@/utils';
+import { LoadingButton } from '@mui/lab';
 import ModalAppointmentTimes from '../ModalAppointmentTimes';
 
 type BookingFormInputs = {
@@ -52,6 +52,7 @@ const schema = object({
 });
 
 export default function BookingForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const date = new Date(searchParams.get('date') as string);
   const time = searchParams.get('time') ?? '';
@@ -62,12 +63,19 @@ export default function BookingForm() {
     control,
     formState: { errors },
   } = useForm<BookingFormInputs>({ resolver });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { specialties } = useContext(ProfessionalContext);
 
   const formattedDate = formatDate(date, { dateStyle: 'long' });
 
   const onSubmit: SubmitHandler<BookingFormInputs> = (data) => {
     console.log(JSON.stringify({ ...data, date, time }, null, '\t'));
+    setIsLoading(true);
+
+    setTimeout(() => {
+      notify('success', 'Consulta agendada com sucesso!');
+      router.push('/booking');
+    }, 1000);
   };
 
   if (Object.keys(errors).length) {
@@ -190,9 +198,9 @@ export default function BookingForm() {
         </Grid>
 
         <Grid item container justifyContent="flex-end">
-          <Button variant="contained" type="submit">
+          <LoadingButton variant="contained" type="submit" loading={isLoading}>
             Agendar consulta
-          </Button>
+          </LoadingButton>
         </Grid>
       </Grid>
     </form>
