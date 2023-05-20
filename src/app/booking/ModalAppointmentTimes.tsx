@@ -63,7 +63,12 @@ export default function ModalAppointmentTimes({
           Ver horários disponíveis
         </Button>
       ) : (
-        <Link component="button" variant="body2" onClick={handleOpen}>
+        <Link
+          component="button"
+          variant="body2"
+          type="button"
+          onClick={handleOpen}
+        >
           Alterar data e/ou horário
         </Link>
       )}

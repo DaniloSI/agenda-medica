@@ -13,7 +13,6 @@ const patternFormatCustom = (mask: string) =>
 
     return (
       <PatternFormat
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...other}
         getInputRef={ref}
         onValueChange={(values) => {
@@ -43,13 +42,16 @@ type InputMaskProps = {
 
 export default function InputMask({
   format,
+  value,
+  onChange,
   ...props
 }: InputMaskProps & TextFieldProps) {
   return (
     <TextField
-      // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
       InputProps={{
+        value,
+        onChange,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         inputComponent: inputPatterns.get(format) as any,
       }}
