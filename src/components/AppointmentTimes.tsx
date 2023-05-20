@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
 import usePageSize from '@/hooks/usePageSize';
 import appointmentTimes from '@/mocks/appointmentTimes';
+import { formatDate } from '@/utils';
 
 type AppointmentTimesProps = {
   onClickTime: (date: Date, time: string) => void;
@@ -80,12 +81,10 @@ export default function AppointmentTimes({
                   variant="body2"
                   color={grey[600]}
                 >
-                  {new Intl.DateTimeFormat('pt-BR', {
+                  {formatDate(day.date, {
                     day: 'numeric',
                     month: 'short',
-                  })
-                    .format(day.date)
-                    .replaceAll(/( de|\.)/g, '')}
+                  }).replaceAll(/( de|\.)/g, '')}
                 </Typography>
               </Box>
               {day.times.map((time) => (

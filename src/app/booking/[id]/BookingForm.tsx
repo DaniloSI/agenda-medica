@@ -26,6 +26,7 @@ import InputMask from '@/components/InputMask';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ErrorMessage } from '@hookform/error-message';
+import { formatDate } from '@/utils';
 import ModalAppointmentTimes from '../ModalAppointmentTimes';
 
 type BookingFormInputs = {
@@ -63,9 +64,7 @@ export default function BookingForm() {
   } = useForm<BookingFormInputs>({ resolver });
   const { specialties } = useContext(ProfessionalContext);
 
-  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
-    dateStyle: 'long',
-  }).format(date);
+  const formattedDate = formatDate(date, { dateStyle: 'long' });
 
   const onSubmit: SubmitHandler<BookingFormInputs> = (data) => {
     console.log(JSON.stringify({ ...data, date, time }, null, '\t'));
@@ -76,7 +75,11 @@ export default function BookingForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={() => {
+        handleSubmit(onSubmit);
+      }}
+    >
       <Grid container p={2} rowSpacing={4}>
         <Grid item xs={12}>
           <FormControl fullWidth error={!!errors.specialty}>
