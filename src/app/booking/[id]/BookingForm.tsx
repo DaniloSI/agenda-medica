@@ -76,8 +76,9 @@ export default function BookingForm() {
 
   return (
     <form
-      onSubmit={() => {
-        handleSubmit(onSubmit);
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(onSubmit)(e);
       }}
     >
       <Grid container p={2} rowSpacing={4}>
@@ -182,7 +183,6 @@ export default function BookingForm() {
             rows={5}
             placeholder="Escreva o motivo da consulta."
             fullWidth
-            focused
             {...register('appointmentReason')}
             error={!!errors.appointmentReason}
             helperText={errors.appointmentReason?.message}
