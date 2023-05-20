@@ -25,7 +25,7 @@ export default function Booking() {
           />
         </Grid>
 
-        <Grid item xs={12} md>
+        <Grid item xs>
           <Autocomplete id="states" options={states} label="Localidade" />
         </Grid>
 

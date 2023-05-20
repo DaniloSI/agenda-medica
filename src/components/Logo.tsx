@@ -3,8 +3,13 @@
 import { Box, Typography } from '@mui/material';
 import { MedicalServices as MedicalServicesIcon } from '@mui/icons-material';
 import Link from 'next/link';
+import { Variant } from '@mui/material/styles/createTypography';
 
-export default function Logo() {
+type LogoProps = {
+  size?: 'small' | 'medium' | 'large';
+};
+
+export default function Logo({ size = 'medium' }: LogoProps) {
   return (
     <Link
       href="/"
@@ -14,9 +19,15 @@ export default function Logo() {
       }}
     >
       <Box display="flex" alignItems="center">
-        <MedicalServicesIcon sx={{ display: 'flex', mr: 1 }} />
+        <MedicalServicesIcon sx={{ display: 'flex', mr: 1 }} fontSize={size} />
         <Typography
-          variant="h6"
+          variant={
+            {
+              small: 'body1',
+              medium: 'h6',
+              large: 'h5',
+            }[size] as Variant
+          }
           noWrap
           sx={{
             mr: 5,

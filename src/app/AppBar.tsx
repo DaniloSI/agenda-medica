@@ -17,10 +17,16 @@ import {
 } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import Logo from '@/components/Logo';
+import { usePathname, useRouter } from 'next/navigation';
 
-const settings = ['Minha conta', 'Sair'];
+const settings = [
+  { label: 'Minha conta', link: '/profile' },
+  { label: 'Sair', link: '/login' },
+];
 
 export default function AppBar() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -43,7 +49,7 @@ export default function AppBar() {
     setAnchorElUser(null);
   };
 
-  return (
+  return pathname !== '/login' ? (
     <MuiAppBar position="relative">
       <Container maxWidth="lg">
         <Toolbar disableGutters>
@@ -121,9 +127,15 @@ export default function AppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map(({ label, link }) => (
+                <MenuItem
+                  key={label}
+                  onClick={() => {
+                    handleCloseUserMenu();
+                    router.push(link);
+                  }}
+                >
+                  <Typography textAlign="center">{label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -131,5 +143,5 @@ export default function AppBar() {
         </Toolbar>
       </Container>
     </MuiAppBar>
-  );
+  ) : null;
 }
