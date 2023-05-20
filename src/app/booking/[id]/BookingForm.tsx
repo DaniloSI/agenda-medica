@@ -29,6 +29,8 @@ import { ErrorMessage } from '@hookform/error-message';
 import ModalAppointmentTimes from '../ModalAppointmentTimes';
 
 type BookingFormInputs = {
+  date: Date;
+  time: string;
   specialty: string;
   firstAppointment: 'yes' | 'no' | '';
   appointmentReason: string;
@@ -49,6 +51,9 @@ const schema = object({
 });
 
 export default function BookingForm() {
+  const searchParams = useSearchParams();
+  const date = new Date(searchParams.get('date') as string);
+  const time = searchParams.get('time') ?? '';
   const resolver = yupResolver(schema);
   const {
     register,
@@ -56,16 +61,14 @@ export default function BookingForm() {
     control,
     formState: { errors },
   } = useForm<BookingFormInputs>({ resolver });
-  const searchParams = useSearchParams();
   const { specialties } = useContext(ProfessionalContext);
 
-  const date = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' }).format(
-    new Date(searchParams.get('date') as string)
-  );
-  const time = searchParams.get('time');
+  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+    dateStyle: 'long',
+  }).format(date);
 
   const onSubmit: SubmitHandler<BookingFormInputs> = (data) => {
-    console.log(JSON.stringify(data, null, '\t'));
+    console.log(JSON.stringify({ ...data, date, time }, null, '\t'));
   };
 
   if (Object.keys(errors).length) {
@@ -105,7 +108,7 @@ export default function BookingForm() {
           <Typography>Data e Horário:</Typography>
           <Typography
             sx={{ fontWeight: 700 }}
-          >{`${date} às ${time}`}</Typography>
+          >{`${formattedDate} às ${time}`}</Typography>
 
           <ModalAppointmentTimes mode="edit" />
         </Grid>
