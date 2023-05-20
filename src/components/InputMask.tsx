@@ -25,6 +25,7 @@ const patternFormatCustom = (mask: string) =>
         }}
         valueIsNumericString
         format={mask}
+        mask="_"
       />
     );
   });
@@ -32,7 +33,7 @@ const patternFormatCustom = (mask: string) =>
 type InputFormat = 'phone' | 'cpf';
 
 const inputPatterns = new Map([
-  ['phone', patternFormatCustom('+55 (##) # #### ####')],
+  ['phone', patternFormatCustom('+55 (##) # ####-####')],
   ['cpf', patternFormatCustom('###.###.###-##')],
 ]);
 
@@ -40,15 +41,14 @@ type InputMaskProps = {
   format: InputFormat;
 };
 
-export default function InputMask({
-  format,
-  value,
-  onChange,
-  ...props
-}: InputMaskProps & TextFieldProps) {
-  return (
+const InputMask = forwardRef(
+  (
+    { format, value, onChange, ...props }: InputMaskProps & TextFieldProps,
+    ref
+  ) => (
     <TextField
       {...props}
+      inputRef={ref}
       InputProps={{
         value,
         onChange,
@@ -57,5 +57,7 @@ export default function InputMask({
       }}
       variant="outlined"
     />
-  );
-}
+  )
+);
+
+export default InputMask;

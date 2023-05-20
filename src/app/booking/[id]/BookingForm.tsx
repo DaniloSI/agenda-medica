@@ -8,6 +8,7 @@ import {
   Button,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   Grid,
   InputLabel,
@@ -24,6 +25,7 @@ import { useSearchParams } from 'next/navigation';
 import InputMask from '@/components/InputMask';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ErrorMessage } from '@hookform/error-message';
 import ModalAppointmentTimes from '../ModalAppointmentTimes';
 
 type BookingFormInputs = {
@@ -34,10 +36,16 @@ type BookingFormInputs = {
 };
 
 const schema = object({
-  specialty: string().required(),
-  firstAppointment: string<'yes' | 'no' | ''>().required(),
-  appointmentReason: string().required(),
-  phone: string().required(),
+  specialty: string().required('Selecione uma especialidade'),
+  firstAppointment: string<'yes' | 'no' | ''>().required(
+    'Informação obrigatória'
+  ),
+  appointmentReason: string().required(
+    'Por favor, digite o motivo da consulta.'
+  ),
+  phone: string()
+    .required('Digite um número de telefone para contato')
+    .length(11, 'Número de telefone incompleto'),
 });
 
 export default function BookingForm() {
@@ -68,13 +76,13 @@ export default function BookingForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container p={2} rowSpacing={4}>
         <Grid item xs={12}>
-          <FormControl fullWidth>
+          <FormControl fullWidth error={!!errors.specialty}>
             <InputLabel id="specialty">Especialidade</InputLabel>
             <Select
               labelId="specialty"
               label="Especialidade"
               native
-              {...register('specialty', { required: true })}
+              {...register('specialty')}
             >
               <option value="" aria-label="Selecione uma especialidade" />
               {specialties.map((s) => (
@@ -83,6 +91,13 @@ export default function BookingForm() {
                 </option>
               ))}
             </Select>
+            <ErrorMessage
+              errors={errors}
+              name="specialty"
+              render={({ message }) => (
+                <FormHelperText>{message}</FormHelperText>
+              )}
+            />
           </FormControl>
         </Grid>
 
@@ -96,12 +111,11 @@ export default function BookingForm() {
         </Grid>
 
         <Grid item xs={12}>
-          <FormControl>
+          <FormControl error={!!errors.firstAppointment}>
             <FormLabel id="first-appointment">Primeira consulta?</FormLabel>
             <Controller
               name="firstAppointment"
               control={control}
-              rules={{ required: true }}
               defaultValue=""
               render={({ field }) => (
                 <RadioGroup
@@ -124,6 +138,13 @@ export default function BookingForm() {
                 </RadioGroup>
               )}
             />
+            <ErrorMessage
+              errors={errors}
+              name="firstAppointment"
+              render={({ message }) => (
+                <FormHelperText>{message}</FormHelperText>
+              )}
+            />
           </FormControl>
         </Grid>
 
@@ -131,24 +152,34 @@ export default function BookingForm() {
           <Controller
             name="phone"
             control={control}
-            rules={{ required: true }}
             defaultValue=""
-            render={({ field }) => (
-              <InputMask {...field} fullWidth label="Telefone" format="phone" />
-            )}
+            render={({ field }) => {
+              const error = errors[field.name];
+              return (
+                <InputMask
+                  {...field}
+                  fullWidth
+                  label="Telefone"
+                  format="phone"
+                  error={!!error}
+                  helperText={error?.message}
+                />
+              );
+            }}
           />
         </Grid>
 
         <Grid item xs={12}>
           <TextField
-            id="appointment-reason"
-            {...register('appointmentReason', { required: true })}
             label="Motivo da consulta"
             multiline
             rows={5}
             placeholder="Escreva o motivo da consulta."
             fullWidth
             focused
+            {...register('appointmentReason')}
+            error={!!errors.appointmentReason}
+            helperText={errors.appointmentReason?.message}
           />
         </Grid>
 
