@@ -12,11 +12,11 @@ export const metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={inter.className} style={{ maxHeight: '100vh' }}>
+      <body className={inter.className} style={{ paddingBottom: 32 }}>
         <AppBar />
         {children}
       </body>
