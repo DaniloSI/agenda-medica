@@ -57,7 +57,7 @@ export default function CardProfessional({
           </Stack>
         )}
       </Box>
-      {!basic && <ModalAppointmentTimes />}
+      {!basic && <ModalAppointmentTimes mode="create" />}
     </Paper>
   );
 }

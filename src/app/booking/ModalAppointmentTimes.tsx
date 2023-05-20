@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 'use client';
 
 import { useContext, useState } from 'react';
@@ -10,6 +12,7 @@ import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
 
 import { useRouter } from 'next/navigation';
 import ProfessionalContext from '@/contexts/ProfessionalContext';
+import { Link } from '@mui/material';
 
 const style = {
   position: 'absolute',
@@ -28,7 +31,13 @@ const style = {
   justifyContent: 'space-between',
 };
 
-export default function ModalAppointmentTimes() {
+type ModalAppointmentTimesProps = {
+  mode: 'create' | 'edit';
+};
+
+export default function ModalAppointmentTimes({
+  mode,
+}: ModalAppointmentTimesProps) {
   const { id } = useContext(ProfessionalContext);
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -43,13 +52,21 @@ export default function ModalAppointmentTimes() {
     params.append('time', time);
 
     router.push(`/booking/${id}?${params.toString()}`);
+
+    handleClose();
   };
 
   return (
     <Box>
-      <Button variant="outlined" fullWidth onClick={handleOpen}>
-        Ver horários disponíveis
-      </Button>
+      {mode === 'create' ? (
+        <Button variant="outlined" fullWidth onClick={handleOpen}>
+          Ver horários disponíveis
+        </Button>
+      ) : (
+        <Link component="button" variant="body2" onClick={handleOpen}>
+          Alterar data e/ou horário
+        </Link>
+      )}
       <Modal
         open={open}
         onClose={handleClose}
