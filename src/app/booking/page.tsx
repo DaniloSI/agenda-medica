@@ -16,12 +16,7 @@ export default function Booking() {
     <Container maxWidth="lg" component="main">
       <Breadcrumbs />
 
-      <Grid
-        container
-        direction={{ xs: 'column', md: 'row' }}
-        alignItems={{ xs: 'flex-end', md: 'center' }}
-        spacing={2}
-      >
+      <Grid container justifyContent="flex-end" spacing={2}>
         <Grid item xs={12} md={6}>
           <Autocomplete
             id="specialties"
@@ -30,7 +25,7 @@ export default function Booking() {
           />
         </Grid>
 
-        <Grid item xs>
+        <Grid item xs={12} md>
           <Autocomplete id="states" options={states} label="Localidade" />
         </Grid>
 
