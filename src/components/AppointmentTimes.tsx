@@ -47,7 +47,7 @@ export default function AppointmentTimes({
       </Box>
       <Box
         sx={{
-          minWidth: { xs: 'calc(100vw - 130px)', md: 'calc(800px - 130px)' },
+          minWidth: { xs: 'calc(100vw - 162px)', md: 'calc(800px - 162px)' },
           overflowX: 'hidden',
         }}
       >
@@ -65,8 +65,8 @@ export default function AppointmentTimes({
               spacing={1}
               sx={{
                 minWidth: {
-                  xs: `calc((100vw - 130px) / ${numberItemsPage})`,
-                  md: `calc((800px - 130px) / ${numberItemsPage})`,
+                  xs: `calc((100vw - 162px) / ${numberItemsPage})`,
+                  md: `calc((800px - 162px) / ${numberItemsPage})`,
                 },
               }}
             >
