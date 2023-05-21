@@ -1,42 +1,143 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 'use client';
 
-import { Container, Paper } from '@mui/material';
+import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
 
-import Breadcrumbs from '@/components/Breadcrumbs';
+import { Box, Grid, Typography } from '@mui/material';
+
 import ProfessionalContext from '@/contexts/ProfessionalContext';
-import professionals from '@/mocks/professionals.json';
-import { useMemo } from 'react';
-import { Professional } from '@/types';
-import useScreen from '@/hooks/useScreen';
-import CardProfessional from '../CardProfessional';
-import BookingForm from './BookingForm';
+import { useContext, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { object, string } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { formatDate, notify } from '@/utils';
+import { LoadingButton } from '@mui/lab';
+import InputMaskForm from '@/components/form/InputMaskForm';
+import RadioGroupForm from '@/components/form/RadioGroupForm';
+import SelectForm from '@/components/form/SelectForm';
+import TextFieldForm from '@/components/form/TextFieldForm';
+import ModalAppointmentTimes from '../ModalAppointmentTimes';
 
-type BookingProps = {
-  params: { id: string };
+type BookingFormInputs = {
+  date: Date;
+  time: string;
+  specialty: string;
+  firstAppointment: 'yes' | 'no' | '';
+  appointmentReason: string;
+  phone: string;
 };
 
-export default function Booking({ params: { id } }: BookingProps) {
-  const { isMobile } = useScreen();
-  const professional = useMemo(
-    () => ({
-      ...professionals[parseInt(id, 10) - 1],
-      id,
-    }),
-    [id]
-  ) as Professional;
+const schema = object({
+  specialty: string().required('Selecione uma especialidade'),
+  firstAppointment: string<'yes' | 'no' | ''>().required(
+    'Informação obrigatória'
+  ),
+  appointmentReason: string().required(
+    'Por favor, digite o motivo da consulta.'
+  ),
+  phone: string()
+    .required('Digite um número de telefone para contato')
+    .length(11, 'Número de telefone incompleto'),
+});
+
+export default function BookingForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const date = new Date(searchParams.get('date') as string);
+  const time = searchParams.get('time') ?? '';
+  const resolver = yupResolver(schema);
+  const methods = useForm<BookingFormInputs>({ resolver });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { specialties } = useContext(ProfessionalContext);
+
+  const formattedDate = formatDate(date, { dateStyle: 'long' });
+
+  const onSubmit: SubmitHandler<BookingFormInputs> = (data) => {
+    console.log(JSON.stringify({ ...data, date, time }, null, '\t'));
+    setIsLoading(true);
+
+    setTimeout(() => {
+      notify('success', 'Consulta agendada com sucesso!');
+      router.push('/booking');
+    }, 1000);
+  };
+
+  if (Object.keys(errors).length) {
+    console.log(errors);
+  }
 
   return (
-    <Container maxWidth="lg" component="main" sx={{ pb: 4 }}>
-      <Breadcrumbs />
+    <FormProvider {...methods}>
+      <Box
+        component="form"
+        onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+        noValidate
+      >
+        <Grid container p={2}>
+          <Grid item xs={12}>
+            <SelectForm
+              name="specialty"
+              label="Especialidade"
+              options={specialties.map((s) => ({ value: s, label: s }))}
+            />
+          </Grid>
 
-      <Container maxWidth={isMobile ? 'lg' : 'sm'}>
-        <Paper variant={isMobile ? 'elevation' : 'outlined'} elevation={0}>
-          <ProfessionalContext.Provider value={professional}>
-            <CardProfessional basic />
-            <BookingForm />
-          </ProfessionalContext.Provider>
-        </Paper>
-      </Container>
-    </Container>
+          <Grid item xs={12} mt={2} mb={1}>
+            <Typography>Data e Horário:</Typography>
+            <Typography
+              sx={{ fontWeight: 700 }}
+            >{`${formattedDate} às ${time}`}</Typography>
+
+            <ModalAppointmentTimes mode="edit" />
+          </Grid>
+
+          <Grid item xs={12}>
+            <RadioGroupForm
+              name="firstAppointment"
+              label="Primeira consulta?"
+              options={[
+                { value: 'yes', label: 'Sim' },
+                { value: 'no', label: 'Não' },
+              ]}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <InputMaskForm
+              name="phone"
+              label="Telefone"
+              autoComplete="phone"
+              format="phone"
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextFieldForm
+              name="appointmentReason"
+              label="Motivo da consulta"
+              placeholder="Escreva o motivo da consulta."
+              multiline
+              rows={5}
+            />
+          </Grid>
+
+          <Grid item container justifyContent="flex-end" mt={2}>
+            <LoadingButton
+              variant="contained"
+              type="submit"
+              loading={isLoading}
+            >
+              Agendar consulta
+            </LoadingButton>
+          </Grid>
+        </Grid>
+      </Box>
+    </FormProvider>
   );
 }
