@@ -87,9 +87,14 @@ export default function BookingForm() {
         onSubmit={(e) => void handleSubmit(onSubmit)(e)}
         noValidate
       >
-        <Grid container p={2} rowSpacing={4}>
+        <Grid container p={2}>
           <Grid item xs={12}>
-            <FormControl required fullWidth error={!!errors.specialty}>
+            <FormControl
+              required
+              fullWidth
+              error={!!errors.specialty}
+              margin="normal"
+            >
               <InputLabel id="specialty">Especialidade</InputLabel>
               <Select
                 labelId="specialty"
@@ -114,7 +119,7 @@ export default function BookingForm() {
             </FormControl>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} mt={2} mb={1}>
             <Typography>Data e Horário:</Typography>
             <Typography
               sx={{ fontWeight: 700 }}
@@ -145,6 +150,7 @@ export default function BookingForm() {
 
           <Grid item xs={12}>
             <TextField
+              margin="normal"
               required
               label="Motivo da consulta"
               multiline
@@ -157,7 +163,7 @@ export default function BookingForm() {
             />
           </Grid>
 
-          <Grid item container justifyContent="flex-end">
+          <Grid item container justifyContent="flex-end" mt={2}>
             <LoadingButton
               variant="contained"
               type="submit"
