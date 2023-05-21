@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 
-import { boolean, object, string } from 'yup';
+import { boolean, object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import InputMaskForm from '@/components/form/InputMaskForm';
@@ -15,7 +15,7 @@ import RadioGroupForm from '@/components/form/RadioGroupForm';
 import { Link, Typography } from '@mui/material';
 import CheckboxForm from '@/components/form/CheckboxForm';
 
-import { date } from '@/utils/yup.custom';
+import { date, string } from '@/utils/yup.custom';
 import { notify } from '@/utils';
 
 type Gender = 'm' | 'f' | 'o';
@@ -38,7 +38,7 @@ const schema = object({
   email: string().email().required(),
   password: string().required(),
   confirmPassword: string().required(),
-  phone: string().required(),
+  phone: string().phone().required(),
   birthDate: date()
     .fromString()
     .required()

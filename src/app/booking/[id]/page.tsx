@@ -9,7 +9,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import ProfessionalContext from '@/contexts/ProfessionalContext';
 import { useContext, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { object, string } from 'yup';
+import { object } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formatDate, notify } from '@/utils';
 import { LoadingButton } from '@mui/lab';
@@ -17,6 +17,7 @@ import InputMaskForm from '@/components/form/InputMaskForm';
 import RadioGroupForm from '@/components/form/RadioGroupForm';
 import SelectForm from '@/components/form/SelectForm';
 import TextFieldForm from '@/components/form/TextFieldForm';
+import { string } from '@/utils/yup.custom';
 import ModalAppointmentTimes from '../ModalAppointmentTimes';
 
 type BookingFormInputs = {
@@ -37,6 +38,7 @@ const schema = object({
     'Por favor, digite o motivo da consulta.'
   ),
   phone: string()
+    .phone()
     .required('Digite um número de telefone para contato')
     .length(11, 'Número de telefone incompleto'),
 });
@@ -64,7 +66,8 @@ export default function BookingForm() {
 
     setTimeout(() => {
       notify('success', 'Consulta agendada com sucesso!');
-      router.push('/booking');
+      // router.push('/booking');
+      setIsLoading(false);
     }, 1000);
   };
 
