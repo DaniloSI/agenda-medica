@@ -45,7 +45,7 @@ export default function RegisterProfessional() {
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(e) => void handleSubmit(onSubmit)(e)}
       sx={{ mt: 1 }}
       noValidate
     >

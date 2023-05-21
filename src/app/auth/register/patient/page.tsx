@@ -78,7 +78,7 @@ export default function RegisterPatient() {
     <FormProvider {...methods}>
       <Box
         component="form"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(e) => void handleSubmit(onSubmit)(e)}
         sx={{ mt: 1 }}
         noValidate
       >

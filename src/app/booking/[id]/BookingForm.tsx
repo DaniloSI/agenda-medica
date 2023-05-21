@@ -82,7 +82,11 @@ export default function BookingForm() {
 
   return (
     <FormProvider {...methods}>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <Box
+        component="form"
+        onSubmit={(e) => void handleSubmit(onSubmit)(e)}
+        noValidate
+      >
         <Grid container p={2} rowSpacing={4}>
           <Grid item xs={12}>
             <FormControl required fullWidth error={!!errors.specialty}>
