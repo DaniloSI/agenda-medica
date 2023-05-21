@@ -21,7 +21,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 const settings = [
   { label: 'Minha conta', link: '/profile' },
-  { label: 'Sair', link: '/login' },
+  { label: 'Sair', link: '/auth/login' },
 ];
 
 export default function AppBar() {
@@ -49,7 +49,7 @@ export default function AppBar() {
     setAnchorElUser(null);
   };
 
-  return pathname !== '/login' ? (
+  return !/^\/auth\/.*/g.test(pathname) ? (
     <MuiAppBar position="relative">
       <Container maxWidth="lg">
         <Toolbar disableGutters>
@@ -94,7 +94,7 @@ export default function AppBar() {
 
           <Logo />
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, ml: 5 }}>
             <Button
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: 'white', display: 'block' }}
@@ -105,7 +105,7 @@ export default function AppBar() {
             </Button>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, ml: 7 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" />

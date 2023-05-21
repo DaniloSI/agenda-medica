@@ -5,13 +5,14 @@ import userEvent from '@testing-library/user-event';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
+  usePathname: jest.fn(() => '/booking'),
 }));
 
 describe('Booking', () => {
   it('should show the breadcrumb', () => {
     render(<Booking />);
 
-    const breadcrumb = screen.getByText(/Agendamento de Consulta/i);
+    const breadcrumb = screen.getByText(/Buscar médicos/i);
 
     expect(breadcrumb).toBeInTheDocument();
   });

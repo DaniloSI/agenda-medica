@@ -1,7 +1,7 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
 import AppBar from './AppBar';
-import ToastifyContainer from './ToastifyContainer';
+import LoadConfig from './LoadConfig';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={inter.className} style={{ paddingBottom: 32 }}>
         <AppBar />
         {children}
-        <ToastifyContainer />
+        <LoadConfig />
       </body>
     </html>
   );

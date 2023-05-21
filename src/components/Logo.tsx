@@ -30,7 +30,6 @@ export default function Logo({ size = 'medium' }: LogoProps) {
           }
           noWrap
           sx={{
-            mr: 5,
             display: 'flex',
             flexGrow: { xs: 1, md: 0 },
             fontWeight: 700,
