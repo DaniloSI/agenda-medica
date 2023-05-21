@@ -5,6 +5,7 @@
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import {
+  Box,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -83,15 +84,17 @@ export default function BookingForm() {
   }
 
   return (
-    <form
-      onSubmit={(e) => {
+    <Box
+      component="form"
+      onSubmit={async (e) => {
         e.preventDefault();
-        handleSubmit(onSubmit)(e);
+        await handleSubmit(onSubmit)(e);
       }}
+      noValidate
     >
       <Grid container p={2} rowSpacing={4}>
         <Grid item xs={12}>
-          <FormControl fullWidth error={!!errors.specialty}>
+          <FormControl required fullWidth error={!!errors.specialty}>
             <InputLabel id="specialty">Especialidade</InputLabel>
             <Select
               labelId="specialty"
@@ -126,7 +129,7 @@ export default function BookingForm() {
         </Grid>
 
         <Grid item xs={12}>
-          <FormControl error={!!errors.firstAppointment}>
+          <FormControl error={!!errors.firstAppointment} required>
             <FormLabel id="first-appointment">Primeira consulta?</FormLabel>
             <Controller
               name="firstAppointment"
@@ -173,6 +176,7 @@ export default function BookingForm() {
               return (
                 <InputMask
                   {...field}
+                  required
                   fullWidth
                   label="Telefone"
                   format="phone"
@@ -186,6 +190,7 @@ export default function BookingForm() {
 
         <Grid item xs={12}>
           <TextField
+            required
             label="Motivo da consulta"
             multiline
             rows={5}
@@ -203,6 +208,6 @@ export default function BookingForm() {
           </LoadingButton>
         </Grid>
       </Grid>
-    </form>
+    </Box>
   );
 }

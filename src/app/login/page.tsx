@@ -2,8 +2,6 @@
 
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -14,22 +12,39 @@ import { LoadingButton } from '@mui/lab';
 import Logo from '@/components/Logo';
 
 import { blue } from '@mui/material/colors';
+import { object, string } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Copyright from './Copyright';
+
+type LoginInputs = {
+  email: string;
+  password: string;
+};
+
+const schema = object({
+  email: string().required('Digite o seu e-mail'),
+  password: string().required('Digite sua senha'),
+});
 
 export default function Login() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const resolver = yupResolver(schema);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<LoginInputs>({ resolver });
+
+  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
+    console.log(JSON.stringify(data, null, '\t'));
     setIsLoading(true);
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
 
     setTimeout(() => {
       router.push('/');
+      setIsLoading(false);
     }, 1000);
   };
 
@@ -47,30 +62,38 @@ export default function Login() {
         <Box color={blue[700]} mb={4}>
           <Logo size="large" />
         </Box>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await handleSubmit(onSubmit)(e);
+          }}
+          sx={{ mt: 1 }}
+          noValidate
+        >
           <TextField
             margin="normal"
             required
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
             autoComplete="email"
             autoFocus
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
           <LoadingButton
             type="submit"
@@ -89,7 +112,7 @@ export default function Login() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/" variant="body2">
+              <Link href="/register" variant="body2">
                 Não possui uma conta? Cadastrar
               </Link>
             </Grid>

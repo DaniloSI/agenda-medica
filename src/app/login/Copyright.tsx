@@ -10,8 +10,8 @@ export default function Copyright(props: any) {
       {...props}
     >
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="/">
+        Agenda Médica
       </Link>{' '}
       {new Date().getFullYear()}.
     </Typography>
