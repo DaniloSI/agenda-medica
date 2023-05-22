@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
 import { ReactElement } from 'react';
+import { get } from 'lodash';
 
 type CheckboxFormProps = {
   name: string;
@@ -41,7 +42,7 @@ export default function CheckboxForm({
 
   return (
     <FormControl
-      error={!!errors[name]}
+      error={!!get(errors, name)}
       required
       margin="normal"
       {...formControlProps}

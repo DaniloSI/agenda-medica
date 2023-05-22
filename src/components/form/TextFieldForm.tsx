@@ -1,6 +1,7 @@
 'use client';
 
 import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { get } from 'lodash';
 
 import { useFormContext } from 'react-hook-form';
 
@@ -9,6 +10,7 @@ export default function TextFieldForm({ name, ...props }: TextFieldProps) {
     register,
     formState: { errors },
   } = useFormContext();
+  const error = get(errors, name as string);
 
   return (
     <TextField
@@ -17,8 +19,8 @@ export default function TextFieldForm({ name, ...props }: TextFieldProps) {
       fullWidth
       {...props}
       {...register(name as string)}
-      error={!!errors[name as string]}
-      helperText={errors[name as string]?.message as string}
+      error={!!error}
+      helperText={error?.message as string}
     />
   );
 }

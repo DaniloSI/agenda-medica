@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 
 import { ErrorMessage } from '@hookform/error-message';
+import { get } from 'lodash';
 
 type RadioGroupFormProps = {
   name: string;
@@ -41,7 +42,7 @@ export default function RadioGroupForm({
   } = useFormContext();
   return (
     <FormControl
-      error={!!errors[name]}
+      error={!!get(errors, name)}
       required
       margin="normal"
       {...formControlProps}

@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 
 import { ErrorMessage } from '@hookform/error-message';
+import { get } from 'lodash';
 
 type Option = {
   value: string;
@@ -46,7 +47,7 @@ export default function SelectForm({
       fullWidth
       margin="normal"
       {...formControlProps}
-      error={!!errors[name]}
+      error={!!get(errors, name)}
     >
       <InputLabel id={name}>{label}</InputLabel>
       <Select

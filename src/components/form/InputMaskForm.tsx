@@ -6,6 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { FormControl, FormHelperText, InputLabel } from '@mui/material';
 import { ErrorMessage } from '@hookform/error-message';
+import { get } from 'lodash';
 import GenericInputMask, { GenericInputMaskProps } from '../GenericInputMask';
 
 export default function InputMaskForm({
@@ -21,7 +22,7 @@ export default function InputMaskForm({
   return (
     <FormControl
       margin="normal"
-      error={!!errors[name as string]}
+      error={!!get(errors, name as string)}
       fullWidth
       variant="outlined"
     >
