@@ -1,20 +1,35 @@
 'use client';
 
-import { Autocomplete as MuiAutocomplete, TextField } from '@mui/material';
-import { Controller, useFormContext } from 'react-hook-form';
+import {
+  AutocompleteChangeReason,
+  Autocomplete as MuiAutocomplete,
+  TextField,
+} from '@mui/material';
+import {
+  Controller,
+  ControllerRenderProps,
+  FieldValues,
+  useFieldArray,
+  useFormContext,
+} from 'react-hook-form';
 
 import { get } from 'lodash';
+import { useState } from 'react';
+
+type OptionProps = 'value' | 'label';
 
 type Option = {
   value: string;
-  name: string;
+  label: string;
 };
 
-type AutocompleteProps = {
+type AutocompleteFormProps = {
   name: string;
   label: string;
-  options: Option[];
+  options: Option[] | string[];
   required?: boolean;
+  multiple?: boolean;
+  propDisplay?: OptionProps;
 };
 
 export default function AutocompleteForm({
@@ -22,29 +37,80 @@ export default function AutocompleteForm({
   label,
   options,
   required = false,
-}: AutocompleteProps) {
+  multiple = false,
+  propDisplay = 'label',
+}: AutocompleteFormProps) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
+  const { append, remove } = useFieldArray({
+    control,
+    name,
+  });
+  const [inputValue, setInputValue] = useState<string | undefined>('');
+
+  const handleIsOptionEqualToValue = (
+    option: Option | string,
+    value: Option | string
+  ) => (typeof option === 'string' ? option : option?.value) === value;
+
+  const getInputValue = (value: Option) => {
+    if (!value) {
+      return '';
+    }
+
+    return typeof value === 'string' ? value : value[propDisplay];
+  };
+
+  const handleChange = (
+    field: ControllerRenderProps<FieldValues, string>,
+    value: any,
+    reason: AutocompleteChangeReason
+  ) => {
+    if (multiple) {
+      if (reason === 'selectOption') {
+        append(value.at(-1).label);
+      } else if (reason === 'removeOption') {
+        const removed = field.value.filter(
+          (v: string) => !value.includes(v)
+        )[0];
+        const removedIndex = field.value.findIndex(
+          (v: string) => v === removed
+        );
+
+        remove(removedIndex);
+      } else if (reason === 'clear') {
+        remove();
+      }
+    } else {
+      field.onChange(typeof value === 'string' ? value : value?.value);
+      setInputValue(getInputValue(value));
+    }
+  };
+
   return (
     <Controller
       name={name}
       control={control}
-      defaultValue={null}
+      defaultValue={multiple ? [] : null}
       render={({ field }) => (
         <MuiAutocomplete
+          disableCloseOnSelect
           disablePortal
           options={options}
-          getOptionLabel={(option) =>
-            typeof option === 'string' ? option : option.name
-          }
           fullWidth
           noOptionsText="Nenhuma opção encontrada"
-          isOptionEqualToValue={(opt, value) => opt.value === value}
+          multiple={multiple}
+          getOptionLabel={(opt) => (typeof opt === 'string' ? opt : opt.label)}
           {...field}
-          onChange={(_, value) => {
-            field.onChange(value?.value);
+          isOptionEqualToValue={handleIsOptionEqualToValue}
+          onChange={(_, value, reason) => handleChange(field, value, reason)}
+          inputValue={inputValue}
+          onInputChange={(_, newInputValue, reason) => {
+            if (reason === 'input' || multiple) {
+              setInputValue(newInputValue);
+            }
           }}
           renderInput={(params) => (
             <TextField

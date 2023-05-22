@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 
-import { boolean, object } from 'yup';
+import { boolean, object, array } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import InputMaskForm from '@/components/form/InputMaskForm';
@@ -20,6 +20,8 @@ import SelectForm from '@/components/form/SelectForm';
 
 import regulators from '@/mocks/regulators.json';
 import AutocompleteForm from '@/components/form/AutocompleteForm';
+
+import specialties from '@/utils/medical-specialties.json';
 
 type ProfessionalRegister = {
   regulator: string;
@@ -35,6 +37,7 @@ type RegisterInputs = {
   confirmPassword: string;
   phone: string;
   register: ProfessionalRegister;
+  specialties: string[];
   acceptTerms: boolean;
 };
 
@@ -50,6 +53,7 @@ const schema = object({
     code: string().required(),
     uf: string().required(),
   }).required(),
+  specialties: array().required(),
   acceptTerms: boolean().isTrue(
     'Aceite os termos de consentimento para continuar.'
   ),
@@ -167,11 +171,22 @@ export default function RegisterProfessional() {
               name="register.uf"
               label="UF"
               options={[
-                { value: 'ES', name: 'Espírito Santo' },
-                { value: 'RJ', name: 'Rio de Janeiro' },
-                { value: 'SP', name: 'São Paulo' },
-                { value: 'PE', name: 'Pernambuco' },
+                { value: 'ES', label: 'Espírito Santo' },
+                { value: 'RJ', label: 'Rio de Janeiro' },
+                { value: 'SP', label: 'São Paulo' },
+                { value: 'PE', label: 'Pernambuco' },
               ]}
+              propDisplay="value"
+              required
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <AutocompleteForm
+              name="specialties"
+              label="Especialidades"
+              multiple
+              options={specialties.map((s) => ({ value: s, label: s }))}
               required
             />
           </Grid>
