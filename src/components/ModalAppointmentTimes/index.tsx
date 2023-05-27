@@ -7,12 +7,12 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import AppointmentTimes from '@/components/AppointmentTimes';
 import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
 
 import { useRouter } from 'next/navigation';
 import ProfessionalContext from '@/contexts/ProfessionalContext';
 import { Link } from '@mui/material';
+import AppointmentTimes from './AppointmentTimes';
 
 const style = {
   position: 'absolute',

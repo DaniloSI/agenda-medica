@@ -2,8 +2,8 @@
 
 import Grid from '@mui/material/Grid';
 
-import InputMaskForm from '@/components/form/InputMaskForm';
-import TextFieldForm from '@/components/form/TextFieldForm';
+import InputMaskForm from '@/components/Form/InputMaskForm';
+import TextFieldForm from '@/components/Form/TextFieldForm';
 
 export default function CommonFields() {
   return (

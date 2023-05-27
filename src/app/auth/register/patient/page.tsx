@@ -3,13 +3,16 @@
 import Grid from '@mui/material/Grid';
 
 import { ObjectSchema, boolean, object } from 'yup';
-import InputMaskForm from '@/components/form/InputMaskForm';
-import RadioGroupForm from '@/components/form/RadioGroupForm';
+import InputMaskForm from '@/components/Form/InputMaskForm';
+import RadioGroupForm from '@/components/Form/RadioGroupForm';
 import { Link, Typography } from '@mui/material';
-import CheckboxForm from '@/components/form/CheckboxForm';
+import CheckboxForm from '@/components/Form/CheckboxForm';
 
 import { date, string } from '@/utils/yup.custom';
-import Form from '@/components/form';
+import Form from '@/components/Form';
+import { useRouter } from 'next/navigation';
+
+import { notify } from '@/utils';
 import CommonFields from '../CommonFields';
 
 type Gender = 'm' | 'f' | 'o';
@@ -44,8 +47,22 @@ const schema: ObjectSchema<RegisterInputs> = object({
 });
 
 export default function RegisterPatient() {
+  const router = useRouter();
   return (
-    <Form schema={schema}>
+    <Form
+      schema={schema}
+      submitButtonLabel="Criar conta"
+      onSubmit={async (data) => {
+        console.log(JSON.stringify(data, null, '\t'));
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            notify('success', 'Conta criada com sucesso!');
+            router.push('/auth/login');
+            resolve();
+          }, 5000);
+        });
+      }}
+    >
       <Grid container columnSpacing={2}>
         <CommonFields />
 

@@ -2,36 +2,33 @@
 
 'use client';
 
-import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
-
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 import ProfessionalContext from '@/contexts/ProfessionalContext';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { object } from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { ObjectSchema, object } from 'yup';
 import { formatDate, notify } from '@/utils';
-import { LoadingButton } from '@mui/lab';
-import InputMaskForm from '@/components/form/InputMaskForm';
-import RadioGroupForm from '@/components/form/RadioGroupForm';
-import SelectForm from '@/components/form/SelectForm';
-import TextFieldForm from '@/components/form/TextFieldForm';
+import InputMaskForm from '@/components/Form/InputMaskForm';
+import RadioGroupForm from '@/components/Form/RadioGroupForm';
+import SelectForm from '@/components/Form/SelectForm';
+import TextFieldForm from '@/components/Form/TextFieldForm';
 import { string } from '@/utils/yup.custom';
-import ModalAppointmentTimes from '../ModalAppointmentTimes';
+import ModalAppointmentTimes from '@/components/ModalAppointmentTimes';
+import Form from '@/components/Form';
+
+type FirstAppointment = 'yes' | 'no' | '';
 
 type BookingFormInputs = {
-  date: Date;
-  time: string;
   specialty: string;
-  firstAppointment: 'yes' | 'no' | '';
+  firstAppointment: FirstAppointment;
   appointmentReason: string;
   phone: string;
 };
 
-const schema = object({
+const schema: ObjectSchema<BookingFormInputs> = object({
   specialty: string().required('Selecione uma especialidade'),
-  firstAppointment: string<'yes' | 'no' | ''>().required(
+  firstAppointment: string<FirstAppointment>().required(
     'Informação obrigatória'
   ),
   appointmentReason: string().required(
@@ -44,102 +41,77 @@ const schema = object({
 });
 
 export default function BookingForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const date = new Date(searchParams.get('date') as string);
   const time = searchParams.get('time') ?? '';
-  const resolver = yupResolver(schema);
-  const methods = useForm<BookingFormInputs>({ resolver });
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = methods;
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { specialties } = useContext(ProfessionalContext);
 
   const formattedDate = formatDate(date, { dateStyle: 'long' });
 
-  const onSubmit: SubmitHandler<BookingFormInputs> = (data) => {
-    console.log(JSON.stringify({ ...data, date, time }, null, '\t'));
-    setIsLoading(true);
-
-    setTimeout(() => {
-      notify('success', 'Consulta agendada com sucesso!');
-      router.push('/booking');
-      setIsLoading(false);
-    }, 1000);
-  };
-
-  if (Object.keys(errors).length) {
-    console.log(errors);
-  }
-
   return (
-    <FormProvider {...methods}>
-      <Box
-        component="form"
-        onSubmit={(e) => void handleSubmit(onSubmit)(e)}
-        noValidate
-      >
-        <Grid container p={2}>
-          <Grid item xs={12}>
-            <SelectForm
-              name="specialty"
-              label="Especialidade"
-              options={specialties.map((s) => ({ value: s, label: s }))}
-            />
-          </Grid>
-
-          <Grid item xs={12} mt={2} mb={1}>
-            <Typography>Data e Horário:</Typography>
-            <Typography
-              sx={{ fontWeight: 700 }}
-            >{`${formattedDate} às ${time}`}</Typography>
-
-            <ModalAppointmentTimes mode="edit" />
-          </Grid>
-
-          <Grid item xs={12}>
-            <RadioGroupForm
-              name="firstAppointment"
-              label="Primeira consulta?"
-              options={[
-                { value: 'yes', label: 'Sim' },
-                { value: 'no', label: 'Não' },
-              ]}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <InputMaskForm
-              name="phone"
-              label="Telefone"
-              autoComplete="phone"
-              format="phone"
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextFieldForm
-              name="appointmentReason"
-              label="Motivo da consulta"
-              placeholder="Escreva o motivo da consulta."
-              multiline
-              rows={5}
-            />
-          </Grid>
-
-          <Grid item container justifyContent="flex-end" mt={2}>
-            <LoadingButton
-              variant="contained"
-              type="submit"
-              loading={isLoading}
-            >
-              Agendar consulta
-            </LoadingButton>
-          </Grid>
+    <Form
+      schema={schema}
+      submitButtonLabel="Agendar consulta"
+      onSubmit={async (data) => {
+        console.log(JSON.stringify({ ...data, date, time }, null, '\t'));
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            notify('success', 'Consulta agendada com sucesso!');
+            router.push('/booking');
+            resolve();
+          }, 5000);
+        });
+      }}
+    >
+      <Grid container p={2}>
+        <Grid item xs={12}>
+          <SelectForm
+            name="specialty"
+            label="Especialidade"
+            options={specialties.map((s) => ({ value: s, label: s }))}
+          />
         </Grid>
-      </Box>
-    </FormProvider>
+
+        <Grid item xs={12} mt={2} mb={1}>
+          <Typography>Data e Horário:</Typography>
+          <Typography
+            sx={{ fontWeight: 700 }}
+          >{`${formattedDate} às ${time}`}</Typography>
+
+          <ModalAppointmentTimes mode="edit" />
+        </Grid>
+
+        <Grid item xs={12}>
+          <RadioGroupForm
+            name="firstAppointment"
+            label="Primeira consulta?"
+            options={[
+              { value: 'yes', label: 'Sim' },
+              { value: 'no', label: 'Não' },
+            ]}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <InputMaskForm
+            name="phone"
+            label="Telefone"
+            autoComplete="phone"
+            format="phone"
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <TextFieldForm
+            name="appointmentReason"
+            label="Motivo da consulta"
+            placeholder="Escreva o motivo da consulta."
+            multiline
+            rows={5}
+          />
+        </Grid>
+      </Grid>
+    </Form>
   );
 }

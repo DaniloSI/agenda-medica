@@ -3,18 +3,20 @@
 import Grid from '@mui/material/Grid';
 
 import { boolean, object, array, ObjectSchema } from 'yup';
-import TextFieldForm from '@/components/form/TextFieldForm';
+import TextFieldForm from '@/components/Form/TextFieldForm';
 import { Link, Typography } from '@mui/material';
-import CheckboxForm from '@/components/form/CheckboxForm';
+import CheckboxForm from '@/components/Form/CheckboxForm';
 
 import { string } from '@/utils/yup.custom';
-import SelectForm from '@/components/form/SelectForm';
+import SelectForm from '@/components/Form/SelectForm';
 
 import regulators from '@/mocks/regulators.json';
-import AutocompleteForm from '@/components/form/AutocompleteForm';
+import AutocompleteForm from '@/components/Form/AutocompleteForm';
 
 import specialties from '@/utils/medical-specialties.json';
-import Form from '@/components/form';
+import Form from '@/components/Form';
+import { notify } from '@/utils';
+import { useRouter } from 'next/navigation';
 import CommonFields from '../CommonFields';
 
 type ProfessionalRegister = {
@@ -54,8 +56,22 @@ const schema: ObjectSchema<RegisterInputs> = object({
 });
 
 export default function RegisterProfessional() {
+  const router = useRouter();
   return (
-    <Form schema={schema}>
+    <Form
+      schema={schema}
+      submitButtonLabel="Criar conta"
+      onSubmit={async (data) => {
+        console.log(JSON.stringify(data, null, '\t'));
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            notify('success', 'Conta criada com sucesso!');
+            router.push('/auth/login');
+            resolve();
+          }, 5000);
+        });
+      }}
+    >
       <Grid container columnSpacing={2}>
         <CommonFields />
 

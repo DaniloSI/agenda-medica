@@ -5,7 +5,7 @@ import { Avatar, Box, Paper, Rating, Stack, Typography } from '@mui/material';
 
 import { useContext } from 'react';
 import ProfessionalContext from '@/contexts/ProfessionalContext';
-import ModalAppointmentTimes from './ModalAppointmentTimes';
+import ModalAppointmentTimes from '@/components/ModalAppointmentTimes';
 
 type CardProfessionalProps = {
   basic?: boolean;

@@ -10,7 +10,7 @@ import { LoadingButton } from '@mui/lab';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import TextFieldForm from '@/components/form/TextFieldForm';
+import TextFieldForm from '@/components/Form/TextFieldForm';
 
 type LoginInputs = {
   email: string;
