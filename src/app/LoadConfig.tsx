@@ -3,6 +3,7 @@
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.min.css';
+import 'keen-slider/keen-slider.min.css';
 import { setLocale } from 'yup';
 
 setLocale({

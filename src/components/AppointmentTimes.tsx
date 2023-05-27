@@ -1,14 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { Button, IconButton, Stack, Typography } from '@mui/material';
+import { Button, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import { ArrowLeft, ArrowRight } from '@mui/icons-material';
 
-import { grey } from '@mui/material/colors';
-import usePageSize from '@/hooks/usePageSize';
 import appointmentTimes from '@/mocks/appointmentTimes';
+import { useKeenSlider } from 'keen-slider/react';
+import { grey } from '@mui/material/colors';
 import { formatDate } from '@/utils';
+import { useState } from 'react';
 
 type AppointmentTimesProps = {
   onClickTime: (date: Date, time: string) => void;
@@ -17,21 +17,35 @@ type AppointmentTimesProps = {
 export default function AppointmentTimes({
   onClickTime,
 }: AppointmentTimesProps) {
-  const [page, setPage] = useState(1);
-  const { numberItemsPage, totalPages } = usePageSize(appointmentTimes.length);
-
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(Math.trunc(totalPages));
-    }
-  }, [totalPages, page]);
+  const theme = useTheme();
+  const { sm, md } = theme.breakpoints.values;
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  const [sliderRef, instanceRef] = useKeenSlider({
+    initial: 0,
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+    created() {
+      setLoaded(true);
+    },
+    breakpoints: {
+      [`(min-width: ${sm}px)`]: {
+        slides: { perView: 4 },
+      },
+      [`(min-width: ${md}px)`]: {
+        slides: { perView: 5 },
+      },
+    },
+    slides: { perView: 3 },
+  });
 
   const handlePrev = () => {
-    setPage((p) => (p === 1 ? p : p - 1));
+    instanceRef.current?.prev();
   };
 
   const handleNext = () => {
-    setPage((p) => (p >= totalPages ? p : p + 1));
+    instanceRef.current?.next();
   };
 
   return (
@@ -39,37 +53,16 @@ export default function AppointmentTimes({
       <Box>
         <IconButton
           size="small"
-          color={page === 1 ? 'default' : 'primary'}
+          color={loaded && currentSlide > 0 ? 'primary' : 'default'}
           onClick={handlePrev}
         >
           <ArrowLeft fontSize="large" />
         </IconButton>
       </Box>
-      <Box
-        sx={{
-          minWidth: { xs: 'calc(100vw - 162px)', md: 'calc(800px - 162px)' },
-          overflowX: 'hidden',
-        }}
-      >
-        <Stack
-          direction="row"
-          sx={{
-            transform: `translateX(calc(100% * -${page - 1}))`,
-            transition: 'transform 1s',
-          }}
-        >
-          {appointmentTimes.map((day) => (
-            <Stack
-              key={day.date.toISOString()}
-              textAlign="center"
-              spacing={1}
-              sx={{
-                minWidth: {
-                  xs: `calc((100vw - 162px) / ${numberItemsPage})`,
-                  md: `calc((800px - 162px) / ${numberItemsPage})`,
-                },
-              }}
-            >
+      <Box ref={sliderRef} className="keen-slider">
+        {appointmentTimes.map((day) => (
+          <Box className="keen-slider__slide">
+            <Stack key={day.date.toISOString()} textAlign="center" spacing={1}>
               <Box>
                 <Typography textTransform="capitalize">
                   {day.date
@@ -93,13 +86,19 @@ export default function AppointmentTimes({
                 </Button>
               ))}
             </Stack>
-          ))}
-        </Stack>
+          </Box>
+        ))}
       </Box>
       <Box>
         <IconButton
           size="small"
-          color={page >= totalPages ? 'default' : 'primary'}
+          color={
+            loaded &&
+            instanceRef.current &&
+            currentSlide < instanceRef.current.track.details.slides.length - 1
+              ? 'primary'
+              : 'default'
+          }
           onClick={handleNext}
         >
           <ArrowRight fontSize="large" />
