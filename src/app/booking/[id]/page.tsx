@@ -51,7 +51,6 @@ export default function BookingForm() {
   const resolver = yupResolver(schema);
   const methods = useForm<BookingFormInputs>({ resolver });
   const {
-    register,
     handleSubmit,
     formState: { errors },
   } = methods;
@@ -66,7 +65,7 @@ export default function BookingForm() {
 
     setTimeout(() => {
       notify('success', 'Consulta agendada com sucesso!');
-      // router.push('/booking');
+      router.push('/booking');
       setIsLoading(false);
     }, 1000);
   };

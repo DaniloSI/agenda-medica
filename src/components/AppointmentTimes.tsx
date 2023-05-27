@@ -61,7 +61,7 @@ export default function AppointmentTimes({
       </Box>
       <Box ref={sliderRef} className="keen-slider">
         {appointmentTimes.map((day) => (
-          <Box className="keen-slider__slide">
+          <Box key={day.date.toISOString()} className="keen-slider__slide">
             <Stack key={day.date.toISOString()} textAlign="center" spacing={1}>
               <Box>
                 <Typography textTransform="capitalize">

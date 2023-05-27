@@ -191,8 +191,6 @@ export default function RegisterProfessional() {
             />
           </Grid>
 
-          {/* TODO: Implementar campo de especialidades */}
-
           <Grid item xs={12}>
             <CheckboxForm
               name="acceptTerms"
