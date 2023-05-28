@@ -2,15 +2,13 @@
 
 'use client';
 
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
 
-import { useRouter } from 'next/navigation';
-import ProfessionalContext from '@/contexts/ProfessionalContext';
 import { Link } from '@mui/material';
 import AppointmentTimes from './AppointmentTimes';
 
@@ -38,23 +36,10 @@ type ModalAppointmentTimesProps = {
 export default function ModalAppointmentTimes({
   mode,
 }: ModalAppointmentTimesProps) {
-  const { id } = useContext(ProfessionalContext);
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [viewMore, setViewMore] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleClickTime = (date: Date, time: string) => {
-    const params = new URLSearchParams();
-
-    params.append('date', date.toISOString());
-    params.append('time', time);
-
-    router.push(`/booking/${id}?${params.toString()}`);
-
-    handleClose();
-  };
 
   return (
     <Box>
@@ -110,7 +95,7 @@ export default function ModalAppointmentTimes({
                   overflowY: 'hidden',
                 }}
               >
-                <AppointmentTimes onClickTime={handleClickTime} />
+                <AppointmentTimes onChangeCallback={handleClose} />
               </Box>
               <Box display="flex" justifyContent="center">
                 <Button

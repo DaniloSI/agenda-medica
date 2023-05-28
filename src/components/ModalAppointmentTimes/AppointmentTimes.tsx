@@ -8,16 +8,21 @@ import appointmentTimes from '@/mocks/appointmentTimes';
 import { useKeenSlider } from 'keen-slider/react';
 import { grey } from '@mui/material/colors';
 import { formatDate } from '@/utils';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
+import ProfessionalContext from '@/contexts/ProfessionalContext';
 
 type AppointmentTimesProps = {
-  onClickTime: (date: Date, time: string) => void;
+  onChangeCallback?: () => void;
 };
 
 export default function AppointmentTimes({
-  onClickTime,
+  onChangeCallback,
 }: AppointmentTimesProps) {
   const theme = useTheme();
+  const { id } = useContext(ProfessionalContext);
+  const router = useRouter();
   const { sm, md } = theme.breakpoints.values;
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -46,6 +51,19 @@ export default function AppointmentTimes({
 
   const handleNext = () => {
     instanceRef.current?.next();
+  };
+
+  const handleClickTime = (date: Date, time: string) => {
+    const params = new URLSearchParams();
+
+    params.append('date', date.toISOString());
+    params.append('time', time);
+
+    router.push(`/booking/${id}?${params.toString()}`);
+
+    if (onChangeCallback) {
+      onChangeCallback();
+    }
   };
 
   return (
@@ -81,7 +99,10 @@ export default function AppointmentTimes({
                 </Typography>
               </Box>
               {day.times.map((time) => (
-                <Button key={time} onClick={() => onClickTime(day.date, time)}>
+                <Button
+                  key={time}
+                  onClick={() => handleClickTime(day.date, time)}
+                >
                   {time}
                 </Button>
               ))}
