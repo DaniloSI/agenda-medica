@@ -32,7 +32,7 @@ export default function PasswordForm({
   return (
     <FormControl
       margin="normal"
-      error={!!get(errors, name as string)}
+      error={!!get(errors, name)}
       fullWidth
       variant="outlined"
     >
@@ -40,7 +40,7 @@ export default function PasswordForm({
         {label}
       </InputLabel>
       <Controller
-        name={name as string}
+        name={name}
         control={control}
         defaultValue=""
         render={({ field }) => (
@@ -70,7 +70,7 @@ export default function PasswordForm({
       />
       <ErrorMessage
         errors={errors}
-        name={name as string}
+        name={name}
         render={({ message }) => <FormHelperText>{message}</FormHelperText>}
       />
     </FormControl>
