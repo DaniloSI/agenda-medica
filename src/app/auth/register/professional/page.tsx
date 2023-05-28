@@ -30,7 +30,6 @@ type RegisterInputs = {
   familyName: string;
   email: string;
   password: string;
-  confirmPassword: string;
   phone: string;
   register: ProfessionalRegister;
   specialties: string[];
@@ -42,14 +41,15 @@ const schema: ObjectSchema<RegisterInputs> = object({
   familyName: string().required(),
   email: string().email().required(),
   password: string().required(),
-  confirmPassword: string().required(),
   phone: string().phone().required(),
   register: object({
     regulator: string().required(),
     code: string().required(),
-    uf: string().required(),
+    uf: string().typeError('Campo obrigatório').required(),
   }).required() as ObjectSchema<ProfessionalRegister>,
-  specialties: array().required(),
+  specialties: array()
+    .required()
+    .min(1, 'Selecione ao menos uma especialidade'),
   acceptTerms: boolean()
     .required()
     .isTrue('Aceite os termos de consentimento para continuar.'),

@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 
 import InputMaskForm from '@/components/Form/InputMaskForm';
 import TextFieldForm from '@/components/Form/TextFieldForm';
+import PasswordForm from '@/components/Form/PasswordForm';
 
 export default function CommonFields() {
   return (
@@ -34,21 +35,7 @@ export default function CommonFields() {
       </Grid>
 
       <Grid item xs={12}>
-        <TextFieldForm
-          name="password"
-          label="Senha"
-          type="password"
-          autoComplete="new-password"
-        />
-      </Grid>
-
-      <Grid item xs={12}>
-        <TextFieldForm
-          name="confirmPassword"
-          label="Confirmar senha"
-          type="password"
-          autoComplete="new-password"
-        />
+        <PasswordForm autoComplete="new-password" />
       </Grid>
 
       <Grid item xs={12}>

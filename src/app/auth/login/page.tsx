@@ -11,6 +11,7 @@ import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import TextFieldForm from '@/components/Form/TextFieldForm';
+import PasswordForm from '@/components/Form/PasswordForm';
 
 type LoginInputs = {
   email: string;
@@ -47,13 +48,9 @@ export default function Login() {
         sx={{ mt: 1 }}
         noValidate
       >
-        <TextFieldForm name="email" label="E-mail" autoComplete="email" />
+        <TextFieldForm name="email" label="E-mail" autoComplete="username" />
 
-        <TextFieldForm
-          name="password"
-          label="Senha"
-          autoComplete="current-password"
-        />
+        <PasswordForm autoComplete="current-password" />
 
         <LoadingButton
           type="submit"

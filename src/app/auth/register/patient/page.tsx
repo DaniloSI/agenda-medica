@@ -22,7 +22,6 @@ type RegisterInputs = {
   familyName: string;
   email: string;
   password: string;
-  confirmPassword: string;
   phone: string;
   birthDate: Date;
   gender: Gender;
@@ -34,7 +33,6 @@ const schema: ObjectSchema<RegisterInputs> = object({
   familyName: string().required(),
   email: string().email().required(),
   password: string().required(),
-  confirmPassword: string().required(),
   phone: string().phone().required(),
   birthDate: date()
     .fromString()
