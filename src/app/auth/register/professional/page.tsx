@@ -18,12 +18,22 @@ import Form from '@/components/Form';
 import { notify } from '@/utils';
 import { useRouter } from 'next/navigation';
 import CommonFields from '../CommonFields';
+import AddressFields from './AddressFields';
 
 type ProfessionalRegister = {
   regulator: string;
   code: string;
   uf: string;
 };
+
+interface Address {
+  state: string;
+  city: string;
+  neighborhood: string;
+  streetAddress: string;
+  number: string;
+  zipCode: string;
+}
 
 type RegisterInputs = {
   givenName: string;
@@ -33,6 +43,7 @@ type RegisterInputs = {
   phone: string;
   register: ProfessionalRegister;
   specialties: string[];
+  address: Address;
   acceptTerms: boolean;
 };
 
@@ -50,6 +61,14 @@ const schema: ObjectSchema<RegisterInputs> = object({
   specialties: array()
     .required()
     .min(1, 'Selecione ao menos uma especialidade'),
+  address: object({
+    state: string().typeError('Campo obrigatório').required(),
+    city: string().required(),
+    neighborhood: string().required(),
+    streetAddress: string().required(),
+    number: string().required(),
+    zipCode: string().required(),
+  }).required() as ObjectSchema<Address>,
   acceptTerms: boolean()
     .required()
     .isTrue('Aceite os termos de consentimento para continuar.'),
@@ -57,6 +76,7 @@ const schema: ObjectSchema<RegisterInputs> = object({
 
 export default function RegisterProfessional() {
   const router = useRouter();
+
   return (
     <Form
       schema={schema}
@@ -74,6 +94,10 @@ export default function RegisterProfessional() {
     >
       <Grid container columnSpacing={2}>
         <CommonFields />
+
+        <Grid item xs={12} mt={2}>
+          <Typography variant="h6">Dados Profissionais</Typography>
+        </Grid>
 
         <Grid item xs={12} md={4}>
           <SelectForm
@@ -118,6 +142,12 @@ export default function RegisterProfessional() {
             required
           />
         </Grid>
+
+        <Grid item xs={12} mt={2}>
+          <Typography variant="h6">Endereço de Atendimento</Typography>
+        </Grid>
+
+        <AddressFields />
 
         <Grid item xs={12}>
           <CheckboxForm

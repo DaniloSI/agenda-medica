@@ -30,12 +30,13 @@ const patternFormatCustom = (mask: string) =>
     );
   });
 
-type InputFormat = 'phone' | 'cpf' | 'date';
+type InputFormat = 'phone' | 'cpf' | 'date' | 'zip-code';
 
 const inputPatterns = new Map([
   ['phone', patternFormatCustom('+55 (00) 0 0000-0000')],
   ['cpf', patternFormatCustom('000.000.000-00')],
   ['date', patternFormatCustom('00/00/0000')],
+  ['zip-code', patternFormatCustom('00000-000')],
 ]);
 
 export type GenericInputMaskProps = {

@@ -96,7 +96,7 @@ export default function AutocompleteForm({
       defaultValue={multiple ? [] : null}
       render={({ field }) => (
         <MuiAutocomplete
-          disableCloseOnSelect
+          disableCloseOnSelect={multiple}
           disablePortal
           options={options}
           fullWidth
