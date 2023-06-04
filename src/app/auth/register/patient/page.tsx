@@ -13,9 +13,10 @@ import Form from '@/components/Form';
 import { useRouter } from 'next/navigation';
 
 import { notify } from '@/utils';
+import axios from 'axios';
 import CommonFields from '../CommonFields';
 
-type Gender = 'm' | 'f' | 'o';
+type Gender = 'M' | 'F' | 'O';
 
 type RegisterInputs = {
   givenName: string;
@@ -50,15 +51,20 @@ export default function RegisterPatient() {
     <Form
       schema={schema}
       submitButtonLabel="Criar conta"
-      onSubmit={async (data) => {
-        console.log(JSON.stringify(data, null, '\t'));
-        return new Promise((resolve) => {
-          setTimeout(() => {
+      onSubmit={async (body) => {
+        await axios
+          .post('/api/patient/register', body)
+          .then(() => {
             notify('success', 'Conta criada com sucesso!');
-            router.push('/auth/login');
-            resolve();
-          }, 5000);
-        });
+            router.push('/login');
+          })
+          .catch(({ response: { data } }) => {
+            if (typeof data === 'string') {
+              notify('error', data);
+            } else {
+              console.log(data);
+            }
+          });
       }}
     >
       <Grid container columnSpacing={2}>
@@ -79,9 +85,9 @@ export default function RegisterPatient() {
             name="gender"
             label="Sexo"
             options={[
-              { value: 'm', label: 'Masculino' },
-              { value: 'f', label: 'Feminino' },
-              { value: 'o', label: 'Prefiro não responder' },
+              { value: 'M', label: 'Masculino' },
+              { value: 'F', label: 'Feminino' },
+              { value: 'O', label: 'Prefiro não responder' },
             ]}
           />
         </Grid>

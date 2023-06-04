@@ -7,11 +7,14 @@ function sleep(delay: number) {
   while (new Date().getTime() < start + delay);
 }
 
-export async function POST(request: Request) {
+export async function POST(
+  request: Request,
+  { params }: { params: { slug: string } }
+) {
   const body = await request.json();
 
   try {
-    const response = await api.post('/users/professionals/sign-up', body);
+    const response = await api.post(`/users/${params.slug}/sign-up`, body);
 
     return NextResponse.json({ ...response.data });
   } catch (error) {
@@ -23,7 +26,7 @@ export async function POST(request: Request) {
       } = error.response as AxiosResponse;
 
       sleep(1500);
-      return new Response(message, {
+      return new Response(JSON.stringify(message), {
         status,
         statusText,
       });

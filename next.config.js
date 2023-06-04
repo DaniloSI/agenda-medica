@@ -23,7 +23,11 @@ const nextConfig = {
     return [
       {
         source: '/api/professional/register',
-        destination: '/auth/register/professional/api',
+        destination: '/auth/register/professionals',
+      },
+      {
+        source: '/api/patient/register',
+        destination: '/auth/register/patients',
       },
     ];
   },
