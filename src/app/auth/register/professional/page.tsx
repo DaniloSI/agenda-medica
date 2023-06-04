@@ -2,6 +2,8 @@
 
 import Grid from '@mui/material/Grid';
 
+import axios from 'axios';
+
 import { boolean, object, array, ObjectSchema } from 'yup';
 import TextFieldForm from '@/components/Form/TextFieldForm';
 import { Link, Typography } from '@mui/material';
@@ -81,15 +83,20 @@ export default function RegisterProfessional() {
     <Form
       schema={schema}
       submitButtonLabel="Criar conta"
-      onSubmit={async (data) => {
-        console.log(JSON.stringify(data, null, '\t'));
-        return new Promise((resolve) => {
-          setTimeout(() => {
+      onSubmit={async (body) => {
+        await axios
+          .post('/api/professional/register', body)
+          .then(() => {
             notify('success', 'Conta criada com sucesso!');
-            router.push('/auth/login');
-            resolve();
-          }, 5000);
-        });
+            router.push('/login');
+          })
+          .catch(({ response: { data } }) => {
+            if (typeof data === 'string') {
+              notify('error', data);
+            } else {
+              console.log(data);
+            }
+          });
       }}
     >
       <Grid container columnSpacing={2}>

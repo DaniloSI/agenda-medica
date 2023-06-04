@@ -8,8 +8,8 @@ import InputMaskForm from '@/components/Form/InputMaskForm';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 
-import axios from 'axios';
 import { notify } from '@/utils';
+import { getZipCodeDetails } from '@/services/zip-code';
 import AddressField from './AddressField';
 
 export default function AddressFields() {
@@ -23,8 +23,8 @@ export default function AddressFields() {
   useEffect(() => {
     if (zipCode?.length === 9) {
       setIsLoading(true);
-      axios
-        .get(`https://viacep.com.br/ws/${zipCode.replace('-', '')}/json/`)
+
+      getZipCodeDetails(zipCode)
         .then(({ data }) => {
           const { erro } = data;
 
